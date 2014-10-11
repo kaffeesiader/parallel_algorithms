@@ -2,7 +2,7 @@ Beispiel:
 Matrix Multiplikation
 
 Kompilieren:
-. make.sh
+make
 
 Mit Problemgröße:
-N=256 ./make.sh
+N=256 make
