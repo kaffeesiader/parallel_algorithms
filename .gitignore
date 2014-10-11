@@ -1,0 +1,8 @@
+*bin
+*.user
+*.proj
+*.creator
+*.files
+*.includes
+*.config
+*.pdf
