@@ -142,6 +142,7 @@ int main()
 	/* Execute OpenCL Kernel */
 
 	size_t global_work_size[] = {N, K};
+	// size_t local_work_size[] = {1, 1};
 	result = clEnqueueNDRangeKernel(command_queue, kernel, 2, NULL, global_work_size, NULL, 0, NULL, NULL);
 
 	if(result != CL_SUCCESS) {
