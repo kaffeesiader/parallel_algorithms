@@ -14,4 +14,4 @@ echo "Device 1, N=2048"
 echo "Device 1, N=4096"
 ./matrix_mul_ocl_N4096_P1
 
-echo -e "\nTest run completed.
+echo -e "\nTest run completed."
