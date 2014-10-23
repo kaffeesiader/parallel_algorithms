@@ -1,0 +1,16 @@
+export AMDOCLSDK=/scratch/c703/c703432/amd_ocl/AMD-APP-SDK-v2.6-RC3-lnx64
+export OCLLIB="-I$AMDOCLSDK/include -L$AMDOCLSDK/lib/x86_64 -lOpenCL"
+
+if test "${N+set}" != set ; then
+    export N=1024
+fi
+if test "${IT+set}" != set ; then
+    export IT=100
+fi
+if test "${CL_PLAT+set}" != set ; then
+    export CL_PLAT=0
+fi
+
+gcc -O3 -std=c99 -Wall -Werror jacobi.c -o jacobi_N${N}_IT${IT} -DN=$N -DIT=$IT -lm
+gcc -O3 -std=c99 -Wall -Werror -fopenmp jacobi.c -o jacobi_omp_N${N}_IT${IT} -DOMP=1 -DN=$N -DIT=$IT -lm
+gcc -O3 -std=c99 -Wall -Werror jacobi_ocl.c $OCLLIB -o jacobi_ocl_N${N}_IT${IT}_P${CL_PLAT} -DN=$N -DIT=$IT -DCL_PLAT=$CL_PLAT -DCL_USE_DEPRECATED_OPENCL_2_0_APIS -lm
