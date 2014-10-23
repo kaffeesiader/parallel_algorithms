@@ -21,8 +21,22 @@ VALUE init_func(int x, int y) {
 	return 40 * sin((VALUE)(16 * (2 * x - 1) * y));
 }
 
+void print_result(VALUE res[N][N]) {
+	printf("Result:\n");
+	for(int i = 1; i < N-1; ++i) {
+		printf("[");
+		for(int j = 1; j < N-1; ++j) {
+			printf(" %3.10f", res[i][j]);
+		}
+		printf(" ]\n");
+	}
+}
+
 int main(int argc, char** argv) {
 	unsigned long start_time = time_ms();
+
+	printf("Jacobi with  N=%d\n", N);
+	printf("Jacobi with IT=%d\n", IT);
 
 	// init matrix
 	memset(u, 0, N*N);
@@ -44,9 +58,11 @@ int main(int argc, char** argv) {
 				tmp[i][j] = (VALUE)1/4 * (u[i-1][j] + u[i][j+1] + u[i][j-1] + u[i+1][j] - factor * f[i][j]);
 			}
 		}
+
 		memcpy(u, tmp, N*N);
 	}
 	
 	printf("Time: %9lu ms\n", time_ms() - start_time);
+	print_result(tmp);
 }
 

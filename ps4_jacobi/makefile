@@ -1,6 +1,6 @@
 all:
-	N=1024 CL_PLAT=0 IT=100 ./make.sh
+	N=5 CL_PLAT=0 IT=3 ./make.sh
 
 clean:
-	rm jacobi_ocl_N*
-	
+	rm -f jacobi_N*
+	rm -f jacobi_ocl_V*
