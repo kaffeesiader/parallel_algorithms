@@ -31,11 +31,10 @@ VALUE init_func(int x, int y) {
 }
 
 void print_result(VALUE res[N][N]) {
-	printf("Result:\n");
-	for(int i = 0; i < N; ++i) {
+	for(int i = 1; i < N-1; ++i) {
 		printf("[");
-		for(int j = 0; j < N; ++j) {
-			printf(" %3.10f", res[i][j]);
+		for(int j = 1; j < N-1; ++j) {
+			printf(" %3.5f", res[i][j]);
 		}
 		printf(" ]\n");
 	}
@@ -102,10 +101,13 @@ int main()
 
 	/* ---------------------------- main part ----------------------------------- */
 
-
+	// also initialize target matrix with zero values!!!
+	err = clEnqueueWriteBuffer(command_queue, matrix_TMP, CL_TRUE, 0, N * N * sizeof(VALUE), u, 0, NULL, &ev_write_U);
+	CLU_ERRCHECK(err, "Failed to write matrix to device");
 	// write f to device (f doesn't change during iterations, so we do that only once..
 	err = clEnqueueWriteBuffer(command_queue, matrix_F, CL_TRUE, 0, N * N * sizeof(VALUE), f, 0, NULL, &ev_write_F);
 	CLU_ERRCHECK(err, "Failed to write matrix to device");
+
 	// necessary, otherwise the next statement throws an error...
 	clWaitForEvents(1, &ev_write_F);
 
@@ -123,8 +125,6 @@ int main()
 						  sizeof(double), (void *)&factor);
 
 	for (int i = 0; i < IT; ++i) {
-		print_result(u);
-
 		// write matrix u to device
 		err = clEnqueueWriteBuffer(command_queue, matrix_U, CL_FALSE, 0, N * N * sizeof(VALUE), u, 0, NULL, &ev_write_U);
 		CLU_ERRCHECK(err, "Failed to write matrix to device");

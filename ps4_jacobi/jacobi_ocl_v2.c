@@ -35,7 +35,7 @@ void print_result(VALUE res[N][N]) {
 	for(int i = 1; i < N-1; ++i) {
 		printf("[");
 		for(int j = 1; j < N-1; ++j) {
-			printf(" %3.10f", res[i][j]);
+			printf(" %3.5f", res[i][j]);
 		}
 		printf(" ]\n");
 	}
@@ -102,7 +102,9 @@ int main()
 
 	/* ---------------------------- main part ----------------------------------- */
 
-
+	// also initialize target matrix with zero values!!!
+	err = clEnqueueWriteBuffer(command_queue, matrix_TMP, CL_TRUE, 0, N * N * sizeof(VALUE), u, 0, NULL, &ev_write_U);
+	CLU_ERRCHECK(err, "Failed to write matrix to device");
 	// write f to device
 	err = clEnqueueWriteBuffer(command_queue, matrix_F, CL_FALSE, 0, N * N * sizeof(VALUE), f, 0, NULL, &ev_write_F);
 	CLU_ERRCHECK(err, "Failed to write matrix F to device");

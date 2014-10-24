@@ -1,5 +1,5 @@
 all:
-	N=5 CL_PLAT=0 IT=3 ./make.sh
+	N=2048 CL_PLAT=0 IT=1000 ./make.sh
 
 clean:
 	rm -f jacobi_N*

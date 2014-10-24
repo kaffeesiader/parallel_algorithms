@@ -22,11 +22,10 @@ VALUE init_func(int x, int y) {
 }
 
 void print_result(VALUE res[N][N]) {
-	printf("Result:\n");
 	for(int i = 1; i < N-1; ++i) {
 		printf("[");
 		for(int j = 1; j < N-1; ++j) {
-			printf(" %3.10f", res[i][j]);
+			printf(" %3.5f", res[i][j]);
 		}
 		printf(" ]\n");
 	}
@@ -59,10 +58,11 @@ int main(int argc, char** argv) {
 			}
 		}
 
-		memcpy(u, tmp, N*N);
+		memcpy(u, tmp, N*N*sizeof(double));
+
 	}
 	
 	printf("Time: %9lu ms\n", time_ms() - start_time);
-	print_result(tmp);
+//	print_result(tmp);
 }
 
