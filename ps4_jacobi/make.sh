@@ -11,7 +11,7 @@ if test "${CL_PLAT+set}" != set ; then
     export CL_PLAT=0
 fi
 
-gcc -O3 -std=c99 -Wall -Werror jacobi.c -o jacobi_N${N}_IT${IT} -DN=$N -DIT=$IT -lm
+# gcc -O3 -std=c99 -Wall -Werror jacobi.c -o jacobi_N${N}_IT${IT} -DN=$N -DIT=$IT -lm
 # gcc -O3 -std=c99 -Wall -Werror -fopenmp jacobi.c -o jacobi_omp_N${N}_IT${IT} -DOMP=1 -DN=$N -DIT=$IT -lm
-gcc -O3 -std=c99 -Wall -Werror jacobi_ocl_v1.c $OCLLIB -o jacobi_ocl_V1_N${N}_IT${IT}_P${CL_PLAT} -DN=$N -DIT=$IT -DCL_PLAT=$CL_PLAT -DCL_USE_DEPRECATED_OPENCL_2_0_APIS -lm
-gcc -O3 -std=c99 -Wall -Werror jacobi_ocl_v2.c $OCLLIB -o jacobi_ocl_V2_N${N}_IT${IT}_P${CL_PLAT} -DN=$N -DIT=$IT -DCL_PLAT=$CL_PLAT -DCL_USE_DEPRECATED_OPENCL_2_0_APIS -lm
+gcc -O3 -std=c99 -Wall -Werror jacobi_ocl_v1.c $OCLLIB -o jacobi_ocl_V1_N${N}_IT${IT}_P${CL_PLAT} -DN=$N -DIT=$IT -DCL_DEVICE=$CL_PLAT -DCL_USE_DEPRECATED_OPENCL_2_0_APIS -lm
+gcc -O3 -std=c99 -Wall -Werror jacobi_ocl_v2.c $OCLLIB -o jacobi_ocl_V2_N${N}_IT${IT}_P${CL_PLAT} -DN=$N -DIT=$IT -DCL_DEVICE=$CL_PLAT -DCL_USE_DEPRECATED_OPENCL_2_0_APIS -lm

@@ -22,7 +22,7 @@
 #define KERNEL_FILE_NAME "./jacobi.cl"
 
 
-#define VALUE double
+#define VALUE float
 
 VALUE u[N][N], f[N][N];
 
@@ -122,7 +122,7 @@ int main()
 						  sizeof(cl_mem), (void *)&matrix_U,
 						  sizeof(cl_mem), (void *)&matrix_F,
 						  sizeof(cl_mem), (void *)&matrix_TMP,
-						  sizeof(double), (void *)&factor);
+						  sizeof(VALUE), (void *)&factor);
 
 	for (int i = 0; i < IT; ++i) {
 		// write matrix u to device
