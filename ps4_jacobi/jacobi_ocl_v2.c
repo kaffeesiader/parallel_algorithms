@@ -22,7 +22,7 @@
 #define KERNEL_FILE_NAME "./jacobi.cl"
 
 
-#define VALUE double
+#define VALUE float
 
 VALUE u[N][N], f[N][N];
 
@@ -133,7 +133,7 @@ int main()
 							  sizeof(cl_mem), (void *)&buffer_u,
 							  sizeof(cl_mem), (void *)&matrix_F,
 							  sizeof(cl_mem), (void *)&buffer_tmp,
-							  sizeof(double), (void *)&factor);
+							  sizeof(VALUE), (void *)&factor);
 
 		// execute kernel
 		err = clEnqueueNDRangeKernel(command_queue, kernel, 2, NULL, size, NULL, 0, NULL, &ev_kernel);

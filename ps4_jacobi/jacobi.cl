@@ -1,4 +1,4 @@
-// #pragma OPENCL EXTENSION cl_khr_byte_addressable_store : enable
+#pragma OPENCL EXTENSION cl_khr_byte_addressable_store : enable
 // #pragma OPENCL EXTENSION cl_khr_fp64: enable
 
 __kernel void matrix_mul(__global VALUE *matrix_U, __global VALUE *matrix_F, __global VALUE *matrix_TMP, VALUE factor)

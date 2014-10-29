@@ -1,0 +1,29 @@
+Testresultat:
+============
+
+N  = 2048
+IT =  100
+
+
+Device		  write		  read		  kernel	  total
+---------------------------------------------------------------------------
+OCL Device: Cedar  |  Vendor: Advanced Micro Devices, Inc.
+
+GPU - V1	312.72 ms	257.26 ms	44654.61 ms	45224.58 ms
+GPU - V2	  6.13 ms	  2.62 ms	44503.49 ms	44512.24 ms
+
+OCL Device: Intel(R) Core(TM) i5-4670S CPU @ 3.10GHz  |  Vendor: GenuineIntel
+
+CPU - V1	330.53 ms	332.83 ms	 6540.69 ms	 7204.05 ms
+CPU - V2	 11.05 ms	  3.48 ms	 6472.91 ms	 6487.05 ms
+
+OCL Device: Intel(R) Core(TM) i5-2467M CPU @ 1.6 GHz  |  Vendor: Intel(R) Corporation
+
+CPU - V1	817.56 ms	835.37 ms	 1532.11 ms	 3185.03 ms
+CPU - V2	 30.28 ms	 14.61 ms	 1483.99 ms	 1528.88 ms
+
+Anmerkung:
+=========
+
+Die letzte Messung erfolgte auf der CPU meines Notebooks, welches die schwächsten
+Leistungsdaten aufweist. Trotzdem lieferte diese Messung die besten Resultate...
