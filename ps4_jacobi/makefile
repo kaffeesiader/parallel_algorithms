@@ -1,5 +1,10 @@
+N=2048
+IT=100
+L=16
+CL_PLAT=0
+
 all:
-	N=2048 CL_PLAT=0 IT=1000 ./make.sh
+	N=$(N) L=$(L) IT=$(IT) CL_PLAT=$(CL_PLAT) ./make.sh
 
 clean:
 	rm -f jacobi_N*
