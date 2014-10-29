@@ -1,0 +1,59 @@
+Starting test run...
+
+Device 0, N=1024
+OCL Device:                            Cedar  |  Vendor:     Advanced Micro Devices, Inc.  |  Type:  GPU
+Verification:   OK
+Write A:                  2 ms
+Write B:                  2 ms
+Kernel execution:      2167 ms
+Read C:                   0 ms
+Time total:            2171 ms
+
+Device 0, N=2048
+OCL Device:                            Cedar  |  Vendor:     Advanced Micro Devices, Inc.  |  Type:  GPU
+Verification:   OK
+Write A:                  3 ms
+Write B:                  3 ms
+Kernel execution:     17052 ms
+Read C:                   2 ms
+Time total:           17060 ms
+
+Device 0, N=4096
+OCL Device:                            Cedar  |  Vendor:     Advanced Micro Devices, Inc.  |  Type:  GPU
+Verification:   OK
+Write A:                 14 ms
+Write B:                 13 ms
+Kernel execution:    150591 ms
+Read C:                  14 ms
+Time total:          150632 ms
+
+
+Device 1, N=1024
+OCL Device: Intel(R) Core(TM) i7-2600 CPU @ 3.40GHz  |  Vendor:                     GenuineIntel  |  Type:  CPU
+Verification:   OK
+Write A:                  2 ms
+Write B:                  2 ms
+Kernel execution:       996 ms
+Read C:                   0 ms
+Time total:            1000 ms
+
+Device 1, N=2048
+OCL Device: Intel(R) Core(TM) i7-2600 CPU @ 3.40GHz  |  Vendor:                     GenuineIntel  |  Type:  CPU
+Verification:   OK
+Write A:                  7 ms
+Write B:                  5 ms
+Kernel execution:     20315 ms
+Read C:                   3 ms
+Time total:           20330 ms
+
+Device 1, N=4096
+OCL Device: Intel(R) Core(TM) i7-2600 CPU @ 3.40GHz  |  Vendor:                     GenuineIntel  |  Type:  CPU
+Verification:   OK
+Write A:                 19 ms
+Write B:                 13 ms
+Kernel execution:    207325 ms
+Read C:                  13 ms
+Time total:          207370 ms
+
+
+Test run completed.

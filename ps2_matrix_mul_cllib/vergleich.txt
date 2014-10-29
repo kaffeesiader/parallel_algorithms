@@ -1,0 +1,14 @@
+
+Der Vergleich wurde für ein GPU und ein CPU Device in 3 verschiedenen Problemgroessen durchgeführt.
+
+Results:
+=======
+
+Device    N   write A   write B   kernel   read C     total
+------------------------------------------------------------
+GPU	1024    2 ms	  2 ms    2167 ms  <1 ms     2171 ms
+CPU	1024    2 ms      2 ms     996 ms  <1 ms     1000 ms
+GPU	2048    3 ms      3 ms   17052 ms   2 ms    17060 ms
+CPU	2048    7 ms      5 ms   20315 ms   3 ms    20330 ms
+GPU	4096   14 ms     13 ms  150591 ms  14 ms   150632 ms
+CPU	4096   19 ms     13 ms  207325 ms  13 ms   207370 ms
