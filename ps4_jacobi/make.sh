@@ -2,10 +2,10 @@ export AMDOCLSDK=/scratch/c703/c703432/amd_ocl/AMD-APP-SDK-v2.6-RC3-lnx64
 export OCLLIB="-I$AMDOCLSDK/include -L$AMDOCLSDK/lib/x86_64 -lOpenCL"
 
 if test "${N+set}" != set ; then
-    export N=1024
+    export N=2048
 fi
 if test "${L+set}" != set ; then
-    export L=16
+    export L=8
 fi
 if test "${IT+set}" != set ; then
     export IT=100

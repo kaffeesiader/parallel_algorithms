@@ -1,0 +1,16 @@
+Vergleichsresultat:
+==================
+
+N    = 2048
+IT   =  100
+
+Alle Messungen wurden auf einem Rechner in RR15 vorgenommen. Die Messungen wurden für local sizes 2x2, 4x4 und 8x8
+durchgeführt. Größere Werte für die local size waren nicht möglich.
+
+Device		  write		  read		  kernel	  total
+---------------------------------------------------------------------------
+OCL Device: Cedar  |  Vendor: Advanced Micro Devices, Inc.
+
+GPU - V3 2x2	  6.74 ms	  2.62 ms	43670.85 ms	43680.20 ms
+GPU - V3 4x4	  6.66 ms	  2.62 ms	11739.93 ms	11749.21 ms
+GPU - V3 8x8	  6.90 ms	  2.62 ms	 4012.57 ms	 4022.08 ms

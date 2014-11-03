@@ -1,0 +1,40 @@
+Starting test run...
+
+V2 - Device GPU, IT=100, N=2048
+Jacobi with  N=2048
+Jacobi with IT=100
+OCL Device:                            Cedar  |  Vendor:     Advanced Micro Devices, Inc.  |  Type:  GPU
+Write total:         7.1646 ms
+Read total:          2.6196 ms
+Kernel execution: 44499.6351 ms
+Time total:       44509.4192 ms
+
+V2 - Device CPU, IT=100, N=2048
+Jacobi with  N=2048
+Jacobi with IT=100
+OCL Device: Intel(R) Core(TM) i7-2600 CPU @ 3.40GHz  |  Vendor:                     GenuineIntel  |  Type:  CPU
+Write total:        10.6835 ms
+Read total:          1.9365 ms
+Kernel execution: 4243.5558 ms
+Time total:       4256.1758 ms
+
+V3 - Device GPU, IT=100, N=2048, L=4
+Jacobi with  N=2048, L_SZ=4, IT=100
+Kernel file name: ./jacobi_v3.cl
+OCL Device:                            Cedar  |  Vendor:     Advanced Micro Devices, Inc.  |  Type:  GPU
+Write total:         6.1802 ms
+Read total:          2.6217 ms
+Kernel execution: 11795.4664 ms
+Time total:       11804.2683 ms
+
+V3 - Device CPU, IT=100, N=2048, L=4
+Jacobi with  N=2048, L_SZ=4, IT=100
+Kernel file name: ./jacobi_v3.cl
+OCL Device: Intel(R) Core(TM) i7-2600 CPU @ 3.40GHz  |  Vendor:                     GenuineIntel  |  Type:  CPU
+Write total:        11.8814 ms
+Read total:          1.9813 ms
+Kernel execution: 2583.5337 ms
+Time total:       2597.3965 ms
+
+
+Test run completed.
