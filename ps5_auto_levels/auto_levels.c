@@ -18,6 +18,8 @@ int main(int argc, char** argv) {
 	int width, height, components;
 	unsigned char *data = stbi_load(argv[1], &width, &height, &components, 0);
 
+	printf("Image details: width=%d, height=%d, channels=%d\n", width, height, components);
+
 	unsigned long long start_time = time_ms();
 
 	// determine maximum, minimum and average ---------------------------------
