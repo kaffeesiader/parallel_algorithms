@@ -159,7 +159,7 @@ const char* cluGetDeviceDescription(const cl_device_id device, unsigned id) {
 		char name[255], vendor[255];
 		cluGetDeviceName(device, 255, name);
 		cluGetDeviceVendor(device, 255, vendor);
-		sprintf(descriptions[id], "%32s  |  Vendor: %32s  |  Type: %4s", name, vendor, cluDeviceTypeString(cluGetDeviceType(device)));
+		sprintf(descriptions[id], "%32s Vendor: %32s Type: %4s", name, vendor, cluDeviceTypeString(cluGetDeviceType(device)));
 	}
 	return descriptions[id];
 }
