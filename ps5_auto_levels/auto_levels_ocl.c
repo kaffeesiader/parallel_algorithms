@@ -16,8 +16,10 @@
 
 #define KERNEL_FILE_NAME "./auto_levels.cl"
 //#define DEBUG
+#ifndef LOC_SZ
+	#define LOC_SZ 256
+#endif
 
-#define L 4
 #define MIN 0
 #define MAX 1
 #define AVG 2
@@ -61,8 +63,9 @@ int main(int argc, char **argv)
 	unsigned char *data = stbi_load(argv[1], &width, &height, &components, 0);
 
 	printf("Image details: width=%d, height=%d, channels=%d\n", width, height, components);
+	printf("Local size: %d\n", LOC_SZ);
 
-	assert (((width*height) % L) == 0);
+	assert (((width*height) % LOC_SZ) == 0);
 
 	int length = width * height;
 
@@ -92,7 +95,7 @@ int main(int argc, char **argv)
 
 	int image_buf_size = length * components;
 	// compute the number of workgroups...
-	int num_WG = length / L;
+	int num_WG = length / LOC_SZ;
 	int result_buf_size = 3 * components * num_WG; // 3(min, max, avg) * (number of workgroups) * components
 	// create memory buffers
 	cl_mem image_buf = clCreateBuffer(context, CL_MEM_READ_WRITE, image_buf_size*sizeof(unsigned char), NULL, &err);
@@ -120,13 +123,13 @@ int main(int argc, char **argv)
 
 	// define work size
 	size_t g_work_size[] = {length};
-	size_t l_work_size[] = {L};
+	size_t l_work_size[] = {LOC_SZ};
 
 	// set kernel arguments
 	cluSetKernelArguments(reduce_kernel, 5,
 						  sizeof(cl_mem), (void *)&image_buf,
 						  // local memory buffer
-						  3*components*L*sizeof(unsigned char), NULL,
+						  3*components*LOC_SZ*sizeof(unsigned char), NULL,
 						  sizeof(int), (void *)&length,
 						  sizeof(int), (void *)&components,
 						  sizeof(cl_mem), (void *)&result_buf);

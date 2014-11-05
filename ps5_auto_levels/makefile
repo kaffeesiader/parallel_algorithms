@@ -1,4 +1,4 @@
-L=16
+L=256
 CL_DEVICE=0
 
 all:
@@ -7,3 +7,4 @@ all:
 clean:
 	rm -r auto_levels
 	rm -r auto_levels_ocl_L*
+	rm -r test
