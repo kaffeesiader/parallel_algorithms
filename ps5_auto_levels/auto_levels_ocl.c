@@ -206,11 +206,6 @@ int main(int argc, char **argv)
 
 //	print_result(data, 4);
 
-	printf("Adjustment completed - writing image '%s'...\n", argv[2]);
-	stbi_write_png(argv[2], width, height, components, data, width*components);
-	stbi_image_free(data);
-	printf("Done!\n");
-
 
 	/* ---------------------------- evaluate results ---------------------------------- */
 
@@ -226,6 +221,12 @@ int main(int argc, char **argv)
 	printf("Write image      : %9.4f ms\n", write_time);
 	printf("Read image       : %9.4f ms\n", read_time);
 	printf("Time total       : %9.4f ms\n\n", reduction_time + adjustment_time, read_time, write_time);
+
+	printf("\nAdjustment completed - writing image '%s'...\n", argv[2]);
+	stbi_write_png(argv[2], width, height, components, data, width*components);
+	stbi_image_free(data);
+	printf("Done!\n");
+
 
 	/* ---------------------------- finalization ------------------------------------- */
 
