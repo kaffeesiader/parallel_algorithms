@@ -107,6 +107,8 @@ int main(int argc, char **argv)
 	// used for profiling info
 	cl_event ev_reduction;
 	cl_event ev_adjustment;
+	cl_event ev_read;
+	cl_event ev_write;
 
 	// create kernels from source
 	cl_program program = cluBuildProgramFromFile(context, device_id, KERNEL_FILE_NAME, NULL);
@@ -116,7 +118,7 @@ int main(int argc, char **argv)
 	CLU_ERRCHECK(err, "Failed to create 'adjust_image'' kernel from program");
 
 	// write image data to device
-	err = clEnqueueWriteBuffer(command_queue, image_buf, CL_FALSE, 0, image_buf_size*sizeof(unsigned char), data, 0, NULL, NULL);
+	err = clEnqueueWriteBuffer(command_queue, image_buf, CL_FALSE, 0, image_buf_size*sizeof(unsigned char), data, 0, NULL, &ev_write);
 	CLU_ERRCHECK(err, "Failed to write image to device");
 
 	/* ---------------------------- reduction part ----------------------------------- */
@@ -199,7 +201,7 @@ int main(int argc, char **argv)
 	CLU_ERRCHECK(err, "Failed to enqueue image adjustment kernel");
 
 	// copy modified image back to host
-	err = clEnqueueReadBuffer(command_queue, image_buf, CL_TRUE, 0, image_buf_size*sizeof(unsigned char), data, 0, NULL, NULL);
+	err = clEnqueueReadBuffer(command_queue, image_buf, CL_TRUE, 0, image_buf_size*sizeof(unsigned char), data, 0, NULL, &ev_read);
 	CLU_ERRCHECK(err, "Failed reading back result");
 
 //	print_result(data, 4);
@@ -215,11 +217,15 @@ int main(int argc, char **argv)
 	// add profiling information
 	double reduction_time = getDurationMS(ev_reduction);
 	double adjustment_time = getDurationMS(ev_adjustment);
+	double read_time = getDurationMS(ev_read);
+	double write_time = getDurationMS(ev_write);
 
 	printf("OCL Device: %s\n", cluGetDeviceDescription(device_id, CL_DEVICE));
 	printf("Reduction kernel : %9.4f ms\n", reduction_time);
 	printf("Adjustment kernel: %9.4f ms\n", adjustment_time);
-	printf("Time total       : %9.4f ms\n\n", reduction_time + adjustment_time);
+	printf("Write image      : %9.4f ms\n", write_time);
+	printf("Read image       : %9.4f ms\n", read_time);
+	printf("Time total       : %9.4f ms\n\n", reduction_time + adjustment_time, read_time, write_time);
 
 	/* ---------------------------- finalization ------------------------------------- */
 
