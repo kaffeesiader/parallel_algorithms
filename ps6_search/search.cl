@@ -6,9 +6,10 @@ __kernel void search(__global VALUE *data, __global int *result, VALUE epsilon, 
 {
 	int lId = get_local_id(0);
 	int l_size = get_local_size(0);
+	int work_size = length/l_size;
 
-	int lower = lId * l_size;
-	int upper = lower + l_size;
+	int lower = lId * work_size;
+	int upper = lower + work_size;
 
 	if(upper > length) {
 	    upper = length;

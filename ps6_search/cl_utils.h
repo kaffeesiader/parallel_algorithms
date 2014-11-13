@@ -158,6 +158,12 @@ int cluGetMaxWorkGroupSize(const cl_device_id device) {
 	return size;
 }
 
+cl_ulong cluGetLocalMemorySize(const cl_device_id device) {
+	cl_ulong size;
+	CLU_ERRCHECK(clGetDeviceInfo(device, CL_DEVICE_LOCAL_MEM_SIZE, sizeof(cl_ulong), &size, NULL), "Error reading local memory size.");
+	return size;
+}
+
 #define MAX_DEVICES 16
 const char* cluGetDeviceDescription(const cl_device_id device, unsigned id) {
 	static char descriptions[MAX_DEVICES][128];

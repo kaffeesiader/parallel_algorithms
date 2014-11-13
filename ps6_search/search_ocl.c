@@ -16,6 +16,7 @@
 #endif
 #define VALUE float
 #define KERNEL_FILE_NAME "./search.cl"
+#define MIN(x,y) ((x<y) ? x : y)
 
 bool find(VALUE *data, VALUE val, VALUE epsilon, int N) {
 	for(int j=0; j<N; ++j) {
@@ -28,7 +29,6 @@ bool find(VALUE *data, VALUE val, VALUE epsilon, int N) {
 
 int main(int argc, char **argv)
 {	
-  
 	if(argc != 3) {
 		printf("Usage: search [elements] [iterations]\nExample: search 1000000 1000\n");
 		return -1;
@@ -55,25 +55,18 @@ int main(int argc, char **argv)
 	cl_command_queue command_queue;
 	cl_device_id device_id = cluInitDevice(CL_DEVICE, &context, &command_queue);
 	
-	// compute local and global size based on maximum group size
-	// and number of elements
-	int max_group_size = cluGetMaxWorkGroupSize(device_id);
-	int group_size = max_group_size;
-	int global_size = elems;
-	
-	if(elems > max_group_size) {
-		global_size = max_group_size;
-		while(global_size < elems) {
-			global_size += max_group_size;
-		}
-	} else {
-		group_size = elems;
-	}
+	// we use the maximum amount of possible threads
+//	int max_group_size = cluGetMaxWorkGroupSize(device_id);
+	int max_group_size = 256;
+	int group_size = MIN(max_group_size, elems);
 
-	printf("Input size : %d\n", elems);
-	printf("Local size : %d\n", group_size);
-	printf("Global size: %d\n", global_size);
-	
+	printf("Input size: %d\n", elems);
+	printf("Group size: %d\n", group_size);
+	printf("Max workgroup size  : %d\n", cluGetMaxWorkGroupSize((device_id)));
+	printf("Local memory size   : %lu\n", cluGetLocalMemorySize(device_id));
+	printf("Max possible threads: %lu\n", cluGetLocalMemorySize(device_id)/sizeof(int));
+
+
 	// create memory buffers
 	cl_int err;
 	cl_mem mem_data = clCreateBuffer(context, CL_MEM_READ_ONLY, elems * sizeof(VALUE), NULL, &err);
@@ -91,14 +84,11 @@ int main(int argc, char **argv)
 	cl_kernel kernel = clCreateKernel(program, "search", &err);
 	CLU_ERRCHECK(err, "Failed to create 'search' kernel from program");
 
-	VALUE value = 0;
-	
 	VALUE epsilon = 0.4/(VALUE)elems;
 	unsigned long long total_time = 0, total_found = 0, found_classical = 0;
-	
-	size_t glob_size[1] = {global_size};
-	size_t loc_size[1] = {group_size};
-	
+	// global and local size are equal...
+	size_t size[1] = {group_size};
+
 	for(int i = 0; i < iters; ++i) {
 		// search
 		unsigned long long start_time = time_ms();
@@ -110,11 +100,12 @@ int main(int argc, char **argv)
 				      sizeof(cl_mem), (void *)&mem_data,
 				      sizeof(cl_mem), (void *)&mem_result,
 				      sizeof(VALUE), (void *)&epsilon,
-				      sizeof(VALUE), (void *)&value,
+					  sizeof(VALUE), (void *)&val,
 				      sizeof(int), (void *)&elems,
-				      group_size*sizeof(int), NULL);
-				      
-		CLU_ERRCHECK(clEnqueueNDRangeKernel(command_queue, kernel, 1, NULL, glob_size, loc_size, 0, NULL, NULL), "Failed to enqueue 2D kernel");
+					  group_size*sizeof(int), NULL);
+
+		err = clEnqueueNDRangeKernel(command_queue, kernel, 1, NULL, size, size, 0, NULL, NULL);
+		CLU_ERRCHECK(err, "Failed to enqueue kernel");
 
 		// read result
 		int result;
@@ -122,8 +113,8 @@ int main(int argc, char **argv)
 		CLU_ERRCHECK(err, "Failed to read result");
 		
 		total_time += time_ms() - start_time;
-		//printf("Result: %d\n", result);
-		
+//		printf("Result: %d\n", result);
+
 		if(result >= 0)
 			total_found++;
 
@@ -133,7 +124,6 @@ int main(int argc, char **argv)
 
 	// print result
 	printf("OCL Device: %s\n", cluGetDeviceDescription(device_id, CL_DEVICE));	
-	printf("Maximum workgroup size: %d\n", cluGetMaxWorkGroupSize((device_id)));
 	printf("Done, took %12llu ms, found %12llu\n", total_time, total_found);
 	printf("Found with classical method: %llu\n", found_classical);
 	
