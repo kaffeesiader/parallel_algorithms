@@ -7,7 +7,9 @@ if test "${CL_DEVICE+set}" != set ; then
 fi
 
 #gcc -O3 -Wall -Werror -std=c99 $OCLLIB search_cl.c dSFMT.c -o search_cl_D$CL_DEVICE -DCL_DEVICE=$CL_DEVICE -lm
-gcc -O3 -Wall -Werror -std=c99 search.c dSFMT.c -o search -lm
+#gcc -O3 -Wall -Werror -std=c99 search.c dSFMT.c -o search -lm
+gcc -O3 -std=c99 search.c dSFMT.c -o search -lm
+gcc -O3 -std=c99 search_ocl.c dSFMT.c $OCLLIB -o search_cl_P${CL_DEVICE} -DCL_DEVICE=$CL_DEVICE -DCL_USE_DEPRECATED_OPENCL_2_0_APIS -lm $1
 
 #gcc -O3 -Wall -Werror -std=c99 search_omp.c dSFMT.c -o search_omp -lm -fopenmp
 #gcc -O3 -Wall -Werror -std=c99 search_omp_seq.c -g dSFMT.c -o search_omp_seq -lm -fopenmp

@@ -3,6 +3,7 @@
 #include <CL/cl.h>
 #include <assert.h>
 #include <stdarg.h>
+#include "cl_utils.h"
 #ifndef WIN32
 #include <alloca.h>
 #else
@@ -149,6 +150,12 @@ const char* cluDeviceTypeString(cl_device_type type);
 	cl_device_type retval;
 	CLU_ERRCHECK(clGetDeviceInfo(device, CL_DEVICE_TYPE, sizeof(retval), &retval, NULL), "Error getting \"device type\" info");
 	return retval;
+}
+
+int cluGetMaxWorkGroupSize(const cl_device_id device) {
+	size_t size;
+	CLU_ERRCHECK(clGetDeviceInfo(device, CL_DEVICE_MAX_WORK_GROUP_SIZE, sizeof(size_t), &size, NULL), "Error reading maximum local size information.");
+	return size;
 }
 
 #define MAX_DEVICES 16
