@@ -14,7 +14,7 @@
 #ifndef CL_DEVICE
 	#define CL_DEVICE 0
 #endif
-#define VALUE float
+#define VALUE double
 #define KERNEL_FILE_NAME "./search.cl"
 #define MIN(x,y) ((x<y) ? x : y)
 
@@ -35,28 +35,24 @@ int main(int argc, char **argv)
 	}
 
 	int elems = atoi(argv[1]), iters = atoi(argv[2]);
-	
+
 	// initialize random number generator
 	dsfmt_t rand_state;
 	dsfmt_init_gen_rand(&rand_state, (uint32_t)time(NULL));
 
+	// allocate memory for data set
+	VALUE *data = (VALUE*)malloc(elems*sizeof(VALUE));
 	// initialize data set (fill randomly)
-	VALUE data[elems];
 	for(int j=0; j<elems; ++j) {
 		data[j] = dsfmt_genrand_close1_open2(&rand_state);
 	}
-	
-	//int elems = 100, iters = 1;
-	//int max_group_size = 100;
-	//int group_size = max_group_size;
-	
+
 	// ocl initialization
 	cl_context context;
 	cl_command_queue command_queue;
 	cl_device_id device_id = cluInitDevice(CL_DEVICE, &context, &command_queue);
 	
 	// we use the maximum amount of possible threads
-//	int max_group_size = cluGetMaxWorkGroupSize(device_id);
 	int max_group_size = 256;
 	int group_size = MIN(max_group_size, elems);
 
@@ -65,7 +61,6 @@ int main(int argc, char **argv)
 	printf("Max workgroup size  : %d\n", cluGetMaxWorkGroupSize((device_id)));
 	printf("Local memory size   : %lu\n", cluGetLocalMemorySize(device_id));
 	printf("Max possible threads: %lu\n", cluGetLocalMemorySize(device_id)/sizeof(int));
-
 
 	// create memory buffers
 	cl_int err;
@@ -137,6 +132,8 @@ int main(int argc, char **argv)
 	err |= clReleaseContext(context);
 	CLU_ERRCHECK(err, "Failed during ocl cleanup");
 	
+	free(data);
+
 	return EXIT_SUCCESS;
 }
 
