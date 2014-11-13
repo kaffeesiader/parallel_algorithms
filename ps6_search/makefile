@@ -1,8 +1,7 @@
-L=256
 CL_DEVICE=0
 
 all:
-	L=$(L) CL_DEVICE=$(CL_DEVICE) ./make.sh
+	CL_DEVICE=$(CL_DEVICE) ./make.sh
 	
 clean:
 	rm -r search
