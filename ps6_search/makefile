@@ -5,4 +5,5 @@ all:
 	
 clean:
 	rm -r search
+	rm -r search_cl_P*
 	

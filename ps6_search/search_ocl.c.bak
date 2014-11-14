@@ -14,6 +14,9 @@
 #ifndef CL_DEVICE
 	#define CL_DEVICE 0
 #endif
+#ifndef GROUP_SIZE
+	#define GROUP_SIZE 128
+#endif
 #define VALUE float
 #define KERNEL_FILE_NAME "./search.cl"
 #define MIN(x,y) ((x<y) ? x : y)
@@ -53,22 +56,12 @@ int main(int argc, char **argv)
 	cl_device_id device_id = cluInitDevice(CL_DEVICE, &context, &command_queue);
 	
 	// we use the maximum amount of possible threads
-	int max_group_size = cluGetMaxWorkGroupSize(device_id);
-	int global_size = elems;
-	int group_size = MIN(max_group_size, elems);
-	
-	if(elems > group_size) {
-		global_size = group_size;
-		while(global_size < elems) {
-			global_size += group_size;
-		}
-	}
+	int group_size = MIN(GROUP_SIZE, elems);
 
-	printf("Input size    : %d\n", elems);
-	printf("Max group size: %d\n", max_group_size);
-	printf("Global size   : %d\n", global_size);
-	printf("Group size    : %d\n", group_size);
-	printf("Local mem size: %lu\n", cluGetLocalMemorySize(device_id));
+	printf("Input size: %d\n", elems);
+	printf("Group size: %d\n", group_size);
+	printf("Max workgroup size  : %d\n", cluGetMaxWorkGroupSize((device_id)));
+	printf("Local memory size   : %lu\n", cluGetLocalMemorySize(device_id));
 	
 	// create memory buffers
 	cl_int err;
@@ -77,10 +70,8 @@ int main(int argc, char **argv)
 	CLU_ERRCHECK(err, "Failed to create buffer for matrix");
 
 	// fill memory buffers
-	int init = -1;
 	err = clEnqueueWriteBuffer(command_queue, mem_data, CL_FALSE, 0, elems * sizeof(VALUE), data, 0, NULL, NULL);
-	err = clEnqueueWriteBuffer(command_queue, mem_result, CL_FALSE, 0, sizeof(int), &init, 0, NULL, NULL);
-	CLU_ERRCHECK(err, "Failed to write data to device");
+	CLU_ERRCHECK(err, "Failed to write matrix to device");
 
 	// create kernel from source
 	char tmp[1024];
@@ -93,8 +84,7 @@ int main(int argc, char **argv)
 	unsigned long long total_time = 0, total_found = 0;
 	unsigned long long found_classical = 0;
 	// global and local size are equal...
-	size_t glb_sz[1] = { global_size };
-	size_t loc_sz[1] = { group_size };
+	size_t size[1] = {group_size};
 
 	for(int i = 0; i < iters; ++i) {
 		// search
@@ -111,7 +101,7 @@ int main(int argc, char **argv)
 				      sizeof(int), (void *)&elems,
 				      group_size*sizeof(int), NULL);
 
-		err = clEnqueueNDRangeKernel(command_queue, kernel, 1, NULL, glb_sz, loc_sz, 0, NULL, NULL);
+		err = clEnqueueNDRangeKernel(command_queue, kernel, 1, NULL, size, size, 0, NULL, NULL);
 		CLU_ERRCHECK(err, "Failed to enqueue kernel");
 
 		// read result
