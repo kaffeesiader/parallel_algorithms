@@ -53,7 +53,8 @@ int main(int argc, char **argv)
 	cl_device_id device_id = cluInitDevice(CL_DEVICE, &context, &command_queue);
 	
 	// we use the maximum amount of possible threads
-	int max_group_size = cluGetMaxWorkGroupSize(device_id);
+//	int max_group_size = cluGetMaxWorkGroupSize(device_id);
+	int max_group_size = 128;
 	int global_size = elems;
 	int group_size = MIN(max_group_size, elems);
 	
@@ -77,9 +78,7 @@ int main(int argc, char **argv)
 	CLU_ERRCHECK(err, "Failed to create buffer for matrix");
 
 	// fill memory buffers
-	int init = -1;
 	err = clEnqueueWriteBuffer(command_queue, mem_data, CL_FALSE, 0, elems * sizeof(VALUE), data, 0, NULL, NULL);
-	err = clEnqueueWriteBuffer(command_queue, mem_result, CL_FALSE, 0, sizeof(int), &init, 0, NULL, NULL);
 	CLU_ERRCHECK(err, "Failed to write data to device");
 
 	// create kernel from source
@@ -99,9 +98,11 @@ int main(int argc, char **argv)
 	for(int i = 0; i < iters; ++i) {
 		// search
 		unsigned long long start_time = time_ms();
-		//VALUE val = (VALUE)100;
+
 		VALUE val = (VALUE)dsfmt_genrand_close1_open2(&rand_state);
-		
+		// reset global result value
+		int init = -1;
+		err = clEnqueueWriteBuffer(command_queue, mem_result, CL_FALSE, 0, sizeof(int), &init, 0, NULL, NULL);
 		// set arguments and execute kernel
 		cluSetKernelArguments(kernel, 6,
 				      sizeof(cl_mem), (void *)&mem_data,
@@ -120,9 +121,9 @@ int main(int argc, char **argv)
 		CLU_ERRCHECK(err, "Failed to read result");
 		
 		total_time += time_ms() - start_time;
-//		printf("Result: %d\n", result);
+		//printf("Result: %d\n", result);
 
-		if(result >= 0)
+		if(result > 0)
 			total_found++;
 
 		if(find(data, val, epsilon, elems))
