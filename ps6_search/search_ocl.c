@@ -53,8 +53,8 @@ int main(int argc, char **argv)
 	cl_device_id device_id = cluInitDevice(CL_DEVICE, &context, &command_queue);
 	
 	// we use the maximum amount of possible threads
-//	int max_group_size = cluGetMaxWorkGroupSize(device_id);
-	int max_group_size = 128;
+	int max_group_size = cluGetMaxWorkGroupSize(device_id);
+//	int max_group_size = 128;
 	int global_size = elems;
 	int group_size = MIN(max_group_size, elems);
 	
@@ -90,7 +90,7 @@ int main(int argc, char **argv)
 
 	VALUE epsilon = 0.4/(VALUE)elems;
 	unsigned long long total_time = 0, total_found = 0;
-	unsigned long long found_classical = 0;
+//	unsigned long long found_classical = 0;
 	// global and local size are equal...
 	size_t glb_sz[1] = { global_size };
 	size_t loc_sz[1] = { group_size };
@@ -104,13 +104,12 @@ int main(int argc, char **argv)
 		int init = -1;
 		err = clEnqueueWriteBuffer(command_queue, mem_result, CL_FALSE, 0, sizeof(int), &init, 0, NULL, NULL);
 		// set arguments and execute kernel
-		cluSetKernelArguments(kernel, 6,
+		cluSetKernelArguments(kernel, 5,
 				      sizeof(cl_mem), (void *)&mem_data,
 				      sizeof(cl_mem), (void *)&mem_result,
 				      sizeof(VALUE), (void *)&epsilon,
 				      sizeof(VALUE), (void *)&val,
-				      sizeof(int), (void *)&elems,
-				      group_size*sizeof(int), NULL);
+				      sizeof(int), (void *)&elems);
 
 		err = clEnqueueNDRangeKernel(command_queue, kernel, 1, NULL, glb_sz, loc_sz, 0, NULL, NULL);
 		CLU_ERRCHECK(err, "Failed to enqueue kernel");
@@ -126,14 +125,14 @@ int main(int argc, char **argv)
 		if(result > 0)
 			total_found++;
 
-		if(find(data, val, epsilon, elems))
-			found_classical++;
+//		if(find(data, val, epsilon, elems))
+//			found_classical++;
 	}
 
 	// print result
 	printf("OCL Device: %s\n", cluGetDeviceDescription(device_id, CL_DEVICE));	
 	printf("Done, took %12llu ms, found %12llu\n", total_time, total_found);
-	printf("Found with classical method: %llu\n", found_classical);
+//	printf("Found with classical method: %llu\n", found_classical);
 	
 	// finalization
 	err = clFinish(command_queue);
