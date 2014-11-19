@@ -1,0 +1,21 @@
+Übungsblatt 6
+=============
+
+Der Test wurde auf einem Rechner in RR19 durchgeführt:
+
+ - OCL Device: Intel(R) Core(TM) i7-2600 CPU @ 3.40GHz - GenuineIntel, Type:  CPU
+
+Der Vergleich ergab, dass nur auf einer CPU die gleiche Performance wie bei der seriellen
+Variante erzielt werden kann.
+
+Bei einer Problemgröße von 1.000.000 Elementen und 1000 Iterationen sind beide Lösungen
+in etwa gleich schnell. Wird die Problemgröße auf 5.000.000 Elemente erhöht, ist die 
+Parallele Variante ca. um Faktor 2 schneller.
+
+Algorithmus	10e6		5*10e6		20*10e6
+-------------------------------------------------------
+Seriell		674 ms		4018 ms		8044 ms
+Parallel	653 ms		2051 ms		8059 ms
+
+Interessanterweise sind bei einer Problemgröße von 20.000.000 beide Lösungen wieder
+in etwa gleich schnell.
