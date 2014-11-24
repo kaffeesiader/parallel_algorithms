@@ -1,0 +1,22 @@
+Countsort Parallelisierung
+==========================
+
+1. Histogrammberechnung:
+   Bei der Parallelisierung der Histogrammberechnung ist es notwendig, die Zugriffe auf
+   die einzelnen BINs des Zielarrays zu synchronisieren, da von verschiedenen Workitems
+   gleichzeitig auf gleiche Indizes zugegriffen werden muss. Dies könnte z.B. durch Benutzung
+   von 'atomic_inc' erreicht werden. Der Overhead, der durch diese Synchronisierung entsteht
+   wird vermutlich so groß sein, dass die parallele Variante wahrscheinlich langsamer ist,
+   als die sequentielle Berechnung.
+
+2. Berechnung der exclusive prefix sum:
+   Für die Umsetzung bietet es sich an, den down-sweep Algorithmus zu implementieren, da
+   sich dieser sehr gut für die Parallelisierung eignet. In unserem konkreten Fall wird 
+   sich dies aber vermutlich nicht lohnen, da unser Histogramm nur 120 Einträge enthält 
+   und somit die erzielbare Performancesteigerung durch die parallele Berechnung nur
+   sehr gering ausfallen kann.
+
+3. Sortierung der Elemente:
+   Hier kommt die gleiche Überlegung wie in 1. zum tragen - wieder muss der Zugriff
+   auf die Einträge im Hilfsarray synchronisiert werden. Die erzielbare Leistungssteigerung
+   wird durch diese Synchronisierung vermutlich wieder verloren gehen. 

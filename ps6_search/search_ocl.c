@@ -56,7 +56,7 @@ int main(int argc, char **argv)
 	int max_group_size = cluGetMaxWorkGroupSize(device_id);
 //	int max_group_size = 128;
 	int global_size = elems;
-	int group_size = MIN(max_group_size, elems);
+	int group_size = MIN(max_group_size, elems) / 4;
 	
 	if(elems > group_size) {
 		global_size = group_size;

@@ -10,6 +10,7 @@ __kernel void search(__global VALUE *data, volatile __global int *result, VALUE 
 	    VALUE mine = data[gId];
 	    if(((VALUE)fabs(mine - value)) < epsilon) {
 		atomic_xchg(result, gId);
+		//result[0] = gId;
 	    }
 	}
 
