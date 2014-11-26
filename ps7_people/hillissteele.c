@@ -14,7 +14,7 @@
 	#define CL_DEVICE 0
 #endif
 #ifndef LOCAL_SIZE
-	#define LOCAL_SIZE 16
+	#define LOCAL_SIZE 8
 #endif
 
 #define KERNEL_FILE_NAME "./hillissteele.cl"

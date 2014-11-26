@@ -1,7 +1,7 @@
 #pragma OPENCL EXTENSION cl_khr_byte_addressable_store : enable
 // #pragma OPENCL EXTENSION cl_khr_fp64: enable
 
-__kernel void scan(__global int *input, __global int *output, int length)
+__kernel void scan(__global int *input, __global int *output, int length, __global int *sumBuffer)
 {
 	__local int temp[GROUPSIZE];
 
@@ -22,8 +22,12 @@ __kernel void scan(__global int *input, __global int *output, int length)
 	}
 
 	// set last element to 0
-	if(lId == 0)
-		temp[l_size-1] = (int)0;
+	if(lId == 0) {
+	    // store the total sum of current group in sum buffer
+	    sumBuffer[get_group_id(0)] = temp[l_size-1];
+	    // then set last element to zero
+	    temp[l_size-1] = (int)0;
+	}
 
 	// downsweep phase
 	for(int offset = (l_size / 2); offset > 0; offset >>= 1) {
@@ -43,3 +47,11 @@ __kernel void scan(__global int *input, __global int *output, int length)
 	output[gId] = temp[lId];
 }
 
+__kernel void add(__global int *data, __global int *sumBuffer, int length)
+{
+    int gId = get_global_id(0);
+    int group_id = get_group_id(0);
+
+    if(gId < length)
+	data[gId] += sumBuffer[group_id];
+}

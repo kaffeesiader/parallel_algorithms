@@ -1,12 +1,12 @@
 CL_DEVICE=0
-LOCAL_SIZE=8
 
 all:
-	CL_DEVICE=$(CL_DEVICE) LOCAL_SIZE=$(LOCAL_SIZE) ./make.sh
+	CL_DEVICE=$(CL_DEVICE) ./make.sh
 	
 clean:
-	rm -r list_gen
-	rm -r list_sort
-	rm -r hillissteele_L*
-	rm -r downsweep_L*
+	rm -rf list_gen
+	rm -rf list_sort
+	rm -rf hillissteele_P*
+	rm -rf downsweep_P*
+	rm -rf prefixglobal_P*
 	
