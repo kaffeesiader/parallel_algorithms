@@ -13,6 +13,24 @@ int _local_size;
 
 bool _initialized;
 
+void show_array(int *arr, int n) {
+	printf("[");
+	for (int i = 0; i < n; ++i) {
+		printf(" %d", arr[i]);
+	}
+	printf(" ]\n");
+}
+
+bool val_prefix_sum(int *input, int *output, int n) {
+	int tmp = 0;
+	for(int i = 0; i < n; ++i) {
+	      if(!output[i] == tmp)
+		return false;
+	      tmp += input[i];
+	}
+	return true;
+}
+
 void prefix_sum(int *input, int *output, int n) {
 
 	if(!_initialized) {
@@ -63,8 +81,8 @@ void prefix_sum(int *input, int *output, int n) {
 
 		// compute the prefix sum of our sum buffer...
 		prefix_sum(sum_buffer, sum_buffer, sum_buffer_size);
-
-		err = clEnqueueWriteBuffer(_command_queue, mem_sum_buffer, CL_FALSE, 0, sum_buffer_size * sizeof(int), sum_buffer, 0, NULL, NULL);
+		
+		err = clEnqueueWriteBuffer(_command_queue, mem_sum_buffer, CL_TRUE, 0, sum_buffer_size * sizeof(int), sum_buffer, 0, NULL, NULL);
 		CLU_ERRCHECK(err, "Failed to write data to device");
 
 		// ... and apply the results to our block sums
@@ -76,14 +94,13 @@ void prefix_sum(int *input, int *output, int n) {
 
 		err = clEnqueueNDRangeKernel(_command_queue, _add_kernel, 1, NULL, &g_sz, &l_sz, 0, NULL, NULL);
 		CLU_ERRCHECK(err, "Failed to enqueue 'add' kernel");
-
 		free(sum_buffer);
 	}
 
 	// read result
 	err = clEnqueueReadBuffer(_command_queue, mem_output, CL_TRUE, 0, n*sizeof(int), output, 0, NULL, NULL);
 	CLU_ERRCHECK(err, "Failed to read result");
-
+	
 	err |= clReleaseMemObject(mem_input);
 	err |= clReleaseMemObject(mem_output);
 	err |= clReleaseMemObject(mem_sum_buffer);
