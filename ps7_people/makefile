@@ -9,4 +9,4 @@ clean:
 	rm -rf hillissteele_P*
 	rm -rf downsweep_P*
 	rm -rf prefixglobal_P*
-	
+	rm -rf countsort_bench_P*

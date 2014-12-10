@@ -47,7 +47,7 @@ int main(int argc, char *argv[])
 	count_sort(persons, sorted, num);
 
 	printf("--- SORTED LIST --- \n");
-	print_list(sorted, num);
+//	print_list(sorted, num);
 
 	free_list(persons, num);
 

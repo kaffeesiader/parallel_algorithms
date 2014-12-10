@@ -36,24 +36,11 @@ void print_array(int *arr, int n) {
 
 int main(int argc, char **argv)
 {	
-//	if(argc != 2) {
-//		printf("Usage: downsweep [elements]\nExample: downsweep 10\n");
-//		return EXIT_FAILURE;
-//	}
-
-//	int elems = atoi(argv[1]);
 	int elems = 8;
 	int data[] = {3,1,7,0,4,1,6,3};
 
 	printf("\n");
 	printf("Input:  "); print_array(data, elems);
-
-	// allocate memory for data set
-//	int *data = (int*)malloc(elems*sizeof(int));
-//	// initialize data set (fill randomly)
-//	for(int i=0; i<elems; ++i) {
-//		data[i] = i;
-//	}
 
 	int *result = (int*)malloc(elems*sizeof(int));
 
@@ -124,7 +111,6 @@ int main(int argc, char **argv)
 	err |= clReleaseContext(context);
 	CLU_ERRCHECK(err, "Failed during ocl cleanup");
 	
-//	free(data);
 	free(result);
 	free(seq_result);
 

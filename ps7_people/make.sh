@@ -12,3 +12,4 @@ fi
 gcc -O3 -Wall -Werror -std=c99 hillissteele.c $OCLLIB -o hillissteele_P${CL_DEVICE} -DCL_DEVICE=$CL_DEVICE -DCL_USE_DEPRECATED_OPENCL_2_0_APIS $1
 gcc -O3 -Wall -Werror -std=c99 downsweep.c $OCLLIB -o downsweep_P${CL_DEVICE} -DCL_DEVICE=$CL_DEVICE -DCL_USE_DEPRECATED_OPENCL_2_0_APIS $1
 gcc -O3 -Wall -Werror -std=c99 test_prefix_global.c prefixglobal.c $OCLLIB -o prefixglobal_P${CL_DEVICE} -DCL_DEVICE=$CL_DEVICE -DCL_USE_DEPRECATED_OPENCL_2_0_APIS $1
+gcc -O3 -Wall -Werror -std=c99 countsort_bench.c $OCLLIB -o countsort_bench_P${CL_DEVICE} -DCL_DEVICE=$CL_DEVICE -DCL_USE_DEPRECATED_OPENCL_2_0_APIS $1

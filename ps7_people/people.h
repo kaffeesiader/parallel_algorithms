@@ -77,6 +77,11 @@ void generate_list(person_t **list, int entries) {
 	}
 }
 
+void fill_list(person_t *list, int n) {
+	for(int i = 0; i < n; ++i)
+		gen_person(&list[i]);
+}
+
 void free_list(person_t **list, int entries) {
 	for (int i = 0; i < entries; ++i) {
 		free(list[i]);
@@ -89,6 +94,16 @@ void print_list(person_t **list, int entries) {
 	printf("----|----------------------------------|\n");
 	for (unsigned int i = 0; i < entries; ++i) {
 		printf("%3d | %-32s |\n", list[i]->age, list[i]->name);
+	}
+	printf("\n");
+}
+
+void print_persons(person_t *list, int entries) {
+	printf("\n");
+	printf("Age | %-32s |\n", "Name");
+	printf("----|----------------------------------|\n");
+	for (unsigned int i = 0; i < entries; ++i) {
+		printf("%3d | %-32s |\n", list[i].age, list[i].name);
 	}
 	printf("\n");
 }
