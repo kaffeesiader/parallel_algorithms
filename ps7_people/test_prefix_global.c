@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
 	// print result
 	printf("Done, took %12llu ms\n", total_time);
 	printf("Validation: %s\n", validate_result(result, elems) ? "OK" : "Not correct!");
-//	printf("Output: "); print_array(result, elems);
+	//printf("Output: "); print_array(result, elems);
 
 	// finalization
 	finalize_prefix_cl();
