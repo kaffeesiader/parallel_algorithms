@@ -117,7 +117,7 @@ int main(int argc, char **argv)
 	/* --------------------------- Calculate histogram -------------------------------- */
 
 	// ensure that global size is at least local size
-	// and is devideable by local size...
+	// and is devidable by local size...
 	int global_size = elems;
 	if((global_size % LOCAL_SIZE) > 0) {
 		global_size += (LOCAL_SIZE - (global_size % LOCAL_SIZE));
